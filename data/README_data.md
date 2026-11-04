@@ -126,6 +126,9 @@
 - `gen_mmorpg_data.py`의 `--no-update` 옵션은 8/30 업데이트, 09-08 핫픽스, 복귀 이벤트를 뺀 비교용 데이터를 만듭니다. 분석에는 필요하지 않습니다.
 - 분석에는 CSV만 있으면 됩니다. 두 스크립트는 데이터가 어떻게 만들어지고 검증되었는지 보여 주는 용도입니다.
 
+## 라이선스
+
+본 프로젝트는 포트폴리오 목적으로 제작되었으며, 모든 권리는 작성자에게 있습니다. 허락 없는 복제, 배포 및 상업적 이용은 삼가 주시기 바랍니다.
 ---
 
 # Aurelion Online: Live-Service Simulation Data Specification
@@ -255,3 +258,8 @@ A row exists only on days the account logged in (`user_id` + `date` is unique). 
 - Required packages: `numpy`, `pandas`.
 - The `--no-update` option of `gen_mmorpg_data.py` creates a comparison dataset without the 08-30 update, the 09-08 hotfix and the comeback event. It is not needed for the analysis.
 - The analysis only needs the CSV files. The two scripts show how the data was created and verified.
+
+## License
+
+This project was created for portfolio purposes, and all rights are reserved by the author. Please refrain from copying, distributing, or using it commercially without permission.
+
