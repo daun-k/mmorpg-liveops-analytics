@@ -570,6 +570,41 @@ labels = pd.DataFrame({"user_id": user_id, "true_segment": SEG_NAMES[seg]})
 labels["abuse_type"] = np.where(seg == BOT, "bot", np.where(seg == FAR, "workshop", ""))
 labels["longplay_reason"] = np.array(["", "shop", "idle", "hardcore"])[reason]
 
+
+# ------------------------------------------------------------------ extra level events (post-processing)
+# reach_lv45 / reach_lv60 are derived from the finished daily table with a separate RNG, so the simulation
+# above, every other table and all earlier funnel events stay exactly as they were.
+# An event is recorded on the first active day a level threshold is reached, only if the account started
+# the window below that level (same rule as reach_lv10 / reach_lv30).
+rng_x = np.random.default_rng([args.seed, 45])
+start_lv = pd.Series(lv0, index=user_id)
+tod = ev.loc[ev["event"].isin(["reach_lv30", "guild_join"]), "t_min"].to_numpy() % 1440   # time-of-day pool
+last_t = ev.groupby(["user_id", "day"])["t_min"].max()                                      # latest earlier event of that user-day
+act_d = act.assign(day=(pd.to_datetime(act["date"]) - START).dt.days)
+extra = []
+for name, th in [("reach_lv45", 45), ("reach_lv60", 60)]:
+    first = act_d[act_d["level"] >= th].sort_values(["user_id", "day"]).groupby("user_id").head(1)
+    first = first[start_lv.reindex(first["user_id"]).to_numpy() < th]
+    extra.append(first[["user_id", "day"]].assign(event=name))
+xe = pd.concat(extra, ignore_index=True)
+xe["t_min"] = rng_x.choice(tod, len(xe))
+lo = last_t.reindex(pd.MultiIndex.from_frame(xe[["user_id", "day"]])).fillna(0).to_numpy()
+late = xe["t_min"].to_numpy() <= lo
+xe.loc[late, "t_min"] = lo[late] + rng_x.random(late.sum()) * (1439.0 - lo[late])
+xe = xe.sort_values(["user_id", "day", "event"], kind="stable").reset_index(drop=True)
+both = xe.duplicated(["user_id", "day"], keep=False).to_numpy()                            # lv45 and lv60 on the same day
+i45 = np.flatnonzero(both & (xe["event"] == "reach_lv45").to_numpy())
+tt = xe["t_min"].to_numpy().copy()
+for i in i45:
+    tt[i], tt[i + 1] = sorted([tt[i], tt[i + 1]])
+tt = tt + 0.0
+wed = np.array([dow_day[d_] == MAINT_DOW for d_ in xe["day"]])
+inw = wed & (tt >= MAINT_START) & (tt < MAINT_END)
+tt[inw] = np.minimum(tt[inw] + 240, 1439.9)
+xe["event_time"] = stamp(xe["day"].to_numpy(), tt)
+fun = pd.concat([fun, xe[["user_id", "event", "event_time"]]], ignore_index=True)
+fun = fun.sort_values(["user_id", "event_time"], kind="stable").reset_index(drop=True)
+
 users.to_csv(f"{args.out}/users.csv", index=False)
 act.to_csv(f"{args.out}/daily_activity.csv", index=False)
 pay.to_csv(f"{args.out}/payments.csv", index=False)
