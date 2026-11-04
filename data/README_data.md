@@ -23,10 +23,10 @@
 ## 3. 게임 규칙 (데이터에 반영된 것)
 
 - 레벨 상한은 60입니다. 레벨은 경험치 누적으로만 오르며 내려가지 않습니다. 레벨업에 필요한 경험치는 레벨이 높을수록 커지고, Lv10 이후와 Lv30 이후에는 성장 속도가 더 느려집니다.
-- **성장 퍼널 4단계**: `tutorial_complete`(튜토리얼 완료) → `reach_lv10`(Lv10 도달) → `first_dungeon`(첫 던전 클리어) → `reach_lv30`(Lv30 도달). 앞 단계를 마쳐야 다음 단계가 열립니다.
+- **성장 퍼널 4단계**: `tutorial_complete`(튜토리얼 완료) → `reach_lv10`(Lv10 도달) → `first_dungeon`(첫 던전 클리어) → `reach_lv30`(Lv30 도달) → `reach_lv45`(Lv45 도달) → `reach_lv60`(Lv60 도달·만렙). 앞 단계를 마쳐야 다음 단계가 열립니다.
   - 튜토리얼을 마치지 못하면 Lv5까지만 오를 수 있습니다.
   - 첫 던전을 클리어하기 전에는 Lv10을 넘길 수 없습니다(Lv10에서 레벨업이 멈춥니다).
-- **길드 가입(`guild_join`)은 선택**입니다. 길드 없이도 Lv30까지 성장할 수 있고, 길드 가입은 첫 던전 클리어 이후 가능합니다.
+- **길드 가입(`guild_join`)은 선택**입니다. 길드 가입은 첫 던전 클리어 이후 가능합니다.
 - 피로도·자동사냥 시스템은 없습니다. 하루 플레이 시간은 접속 시간 자체입니다.
 - 결제 상품은 6개 가격대(1,100 / 5,500 / 11,000 / 33,000 / 55,000 / 110,000원)입니다.
 
@@ -53,7 +53,7 @@
 | `users.csv` | 34,000 | 계정 마스터 |
 | `daily_activity.csv` | 268,799 | 계정·날짜별 활동(접속한 날만 기록) |
 | `payments.csv` | 2,917 | 결제 1건당 1행 |
-| `funnel_events.csv` | 18,504 | 성장·길드 이벤트 1건당 1행 |
+| `funnel_events.csv` | 23,597 | 성장·길드 이벤트 1건당 1행 |
 
 파일 하나의 최대 크기는 약 9.8MB(GitHub 웹 업로드 한도 25MB 이내)입니다.
 
@@ -98,11 +98,11 @@
 | 컬럼 | 타입 | 설명 | 비고 |
 |---|---|---|---|
 | `user_id` | INT | 계정 ID (FK → users) | 해당 시각에 접속 기록이 있는 계정만 |
-| `event` | VARCHAR | 이벤트 이름 | `tutorial_complete`, `reach_lv10`, `first_dungeon`, `reach_lv30`, `guild_join` |
+| `event` | VARCHAR | 이벤트 이름 | `tutorial_complete`, `reach_lv10`, `first_dungeon`, `reach_lv30`, `reach_lv45`, `reach_lv60`, `guild_join` |
 | `event_time` | DATETIME | 발생 시각 | 정기 점검 시간대에는 없음 |
 
 - 계정·이벤트 조합은 유일합니다(같은 이벤트가 두 번 찍히지 않음).
-- **관측 기간 안에서 일어난 이벤트만 기록됩니다.** 기간 시작 전에 가입한 계정은 튜토리얼·Lv10·첫 던전을 이미 지났을 수 있어도 해당 행이 없습니다. 이런 계정에는 기간 안에 발생한 `guild_join`, `reach_lv30`만 나타납니다. 따라서 퍼널 전환율은 **기간 중 가입한 계정(`signup_date >= '2026-07-01'`)만** 대상으로 계산해야 합니다.
+- **관측 기간 안에서 일어난 이벤트만 기록됩니다.** 기간 시작 전에 가입한 계정은 튜토리얼·Lv10·첫 던전을 이미 지났을 수 있어도 해당 행이 없습니다. 이런 계정에는 기간 안에 발생한 `guild_join`, `reach_lv30`, `reach_lv45`, `reach_lv60`만 나타나며, 관측 시작 전에 이미 해당 레벨을 넘은 계정에는 그 레벨의 행이 없습니다. 따라서 퍼널 전환율은 **기간 중 가입한 계정(`signup_date >= '2026-07-01'`)만** 대상으로 계산해야 합니다.
 
 ## 6. 데이터를 쓸 때 알아둘 점
 
@@ -120,8 +120,9 @@
 | 파일 | 역할 | 실행 (레포 루트에서) |
 |---|---|---|
 | `gen_mmorpg_data.py` | 시뮬레이션 데이터 생성기. 계정마다 하루씩 레벨·경험치·퍼널 진행 상태를 갱신하며 접속, 결제, 이벤트를 만들어 CSV 4개와 라벨 파일(`_answer_key_labels.csv`)로 저장합니다. seed가 고정되어 같은 명령이면 같은 데이터가 나옵니다. | `python data/generator/gen_mmorpg_data.py --seed 42 --out data --answer-out answer_key` |
-| `validate_data.py` | 생성된 CSV의 정합성 검사기. 키·형식, 가입 전 활동, 레벨 감소, 퍼널 선행 조건과 순서, 접속하지 않은 날의 이벤트·결제, 점검 시간대 기록 등 40여 개 항목을 확인하고 위반 건수를 출력합니다(위반이 있으면 종료 코드 1). 현재 데이터는 위반 0건입니다. | `python data/generator/validate_data.py data` |
+| `validate_data.py` | 생성된 CSV의 정합성 검사기. 키·형식, 가입 전 활동, 레벨 감소, 퍼널 선행 조건과 순서, 접속하지 않은 날의 이벤트·결제, 점검 시간대 기록 등 50여 개 항목을 확인하고 위반 건수를 출력합니다(위반이 있으면 종료 코드 1). 현재 데이터는 위반 0건입니다. | `python data/generator/validate_data.py data` |
 
+- `reach_lv45`, `reach_lv60` 이벤트는 시뮬레이션이 끝난 뒤 완성된 `daily_activity`에서 도출합니다(별도 난수 사용). 따라서 다른 테이블과 기존 이벤트는 영향을 받지 않습니다.
 - 필요한 패키지는 `numpy`, `pandas`입니다.
 - `gen_mmorpg_data.py`의 `--no-update` 옵션은 8/30 업데이트, 09-08 핫픽스, 복귀 이벤트를 뺀 비교용 데이터를 만듭니다. 분석에는 필요하지 않습니다.
 - 분석에는 CSV만 있으면 됩니다. 두 스크립트는 데이터가 어떻게 만들어지고 검증되었는지 보여 주는 용도입니다.
@@ -134,7 +135,7 @@
 
 # Aurelion Online: Live-Service Simulation Data Specification
 
-> Operational logs of a fictional MMORPG, **Aurelion Online**. This is not real service data. I generated it myself with Claude for practicing live-service analytics (KPI reporting, anomaly and abuse detection, hypothesis testing). The generator is `gen_mmorpg_data.py` (seed 42) and the consistency checker is `validate_data.py`.
+> Operational logs of a fictional MMORPG, **Aurelion Online**. This is not real service data. It was generated for practicing live-service analytics (KPI reporting, anomaly and abuse detection, hypothesis testing). The generator is `gen_mmorpg_data.py` (seed 42) and the consistency checker is `validate_data.py`.
 
 ## 1. Scenario
 
@@ -157,7 +158,7 @@
 ## 3. Game rules reflected in the data
 
 - The level cap is 60. Level rises only with accumulated XP and never goes down. The XP needed per level grows with level, and leveling slows down further after Lv10 and again after Lv30.
-- **Four-step growth funnel**: `tutorial_complete` -> `reach_lv10` -> `first_dungeon` (first dungeon cleared) -> `reach_lv30`. Each step unlocks only after the previous one.
+- **Four-step growth funnel**: `tutorial_complete` -> `reach_lv10` -> `first_dungeon` (first dungeon cleared) -> `reach_lv30`. Each step unlocks only after the previous one. Later milestones `reach_lv45` and `reach_lv60` (level cap) are also recorded, but they are not part of the four-step funnel.
   - A player who does not finish the tutorial can only reach Lv5.
   - Before clearing the first dungeon, a player cannot go past Lv10 (leveling stops at Lv10).
 - **Joining a guild (`guild_join`) is optional.** Players can reach Lv30 without a guild; joining becomes possible after the first dungeon is cleared.
@@ -187,7 +188,7 @@
 | `users.csv` | 34,000 | Account master |
 | `daily_activity.csv` | 268,799 | One row per account per active day |
 | `payments.csv` | 2,917 | One row per purchase |
-| `funnel_events.csv` | 18,504 | One row per growth/guild event |
+| `funnel_events.csv` | 23,597 | One row per growth/guild event |
 
 The largest file is about 9.8 MB (under GitHub's 25 MB web upload limit).
 
@@ -232,11 +233,11 @@ A row exists only on days the account logged in (`user_id` + `date` is unique). 
 | Column | Type | Description | Notes |
 |---|---|---|---|
 | `user_id` | INT | Account ID (FK -> users) | Only accounts that were active at that time |
-| `event` | VARCHAR | Event name | `tutorial_complete`, `reach_lv10`, `first_dungeon`, `reach_lv30`, `guild_join` |
+| `event` | VARCHAR | Event name | `tutorial_complete`, `reach_lv10`, `first_dungeon`, `reach_lv30`, `reach_lv45`, `reach_lv60`, `guild_join` |
 | `event_time` | DATETIME | When it happened | None during weekly maintenance |
 
 - An (account, event) pair is unique; the same event is never logged twice.
-- **Only events that happened inside the window are recorded.** An account that signed up before the window may have passed the tutorial, Lv10 and the first dungeon already, but those rows do not exist. Such accounts only show `guild_join` and `reach_lv30` if they happened inside the window. Funnel conversion should therefore be computed **only for accounts that signed up inside the window (`signup_date >= '2026-07-01'`)**.
+- **Only events that happened inside the window are recorded.** An account that signed up before the window may have passed the tutorial, Lv10 and the first dungeon already, but those rows do not exist. Such accounts only show `guild_join`, `reach_lv30`, `reach_lv45` and `reach_lv60` if they happened inside the window, and an account that had already passed a level before the window has no row for that level. Funnel conversion should therefore be computed **only for accounts that signed up inside the window (`signup_date >= '2026-07-01'`)**.
 
 ## 6. Notes for using the data
 
@@ -254,8 +255,9 @@ A row exists only on days the account logged in (`user_id` + `date` is unique). 
 | File | Role | Run (from the repository root) |
 |---|---|---|
 | `gen_mmorpg_data.py` | Simulation data generator. It updates each account's level, XP and funnel progress day by day, produces logins, purchases and events, and writes the four CSV files plus the label file (`_answer_key_labels.csv`). The seed is fixed, so the same command produces the same data. | `python data/generator/gen_mmorpg_data.py --seed 42 --out data --answer-out answer_key` |
-| `validate_data.py` | Consistency checker for the generated CSVs. It checks about 40 items, including keys and formats, activity before sign-up, level decreases, funnel prerequisites and order, events and payments on days without a login, and records inside the maintenance window, and prints the number of violations (exit code 1 if any). The current data has 0 violations. | `python data/generator/validate_data.py data` |
+| `validate_data.py` | Consistency checker for the generated CSVs. It checks about 50 items, including keys and formats, activity before sign-up, level decreases, funnel prerequisites and order, events and payments on days without a login, and records inside the maintenance window, and prints the number of violations (exit code 1 if any). The current data has 0 violations. | `python data/generator/validate_data.py data` |
 
+- `reach_lv45` and `reach_lv60` are derived from the finished `daily_activity` table after the simulation (with a separate random stream), so the other tables and the earlier events are not affected.
 - Required packages: `numpy`, `pandas`.
 - The `--no-update` option of `gen_mmorpg_data.py` creates a comparison dataset without the 08-30 update, the 09-08 hotfix and the comeback event. It is not needed for the analysis.
 - The analysis only needs the CSV files. The two scripts show how the data was created and verified.
