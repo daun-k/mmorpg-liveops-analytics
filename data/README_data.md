@@ -23,10 +23,10 @@
 ## 3. 게임 규칙 (데이터에 반영된 것)
 
 - 레벨 상한은 60입니다. 레벨은 경험치 누적으로만 오르며 내려가지 않습니다. 레벨업에 필요한 경험치는 레벨이 높을수록 커지고, Lv10 이후와 Lv30 이후에는 성장 속도가 더 느려집니다.
-- **성장 퍼널 4단계**: `tutorial_complete`(튜토리얼 완료) → `reach_lv10`(Lv10 도달) → `first_dungeon`(첫 던전 클리어) → `reach_lv30`(Lv30 도달) → `reach_lv45`(Lv45 도달) → `reach_lv60`(Lv60 도달·만렙). 앞 단계를 마쳐야 다음 단계가 열립니다.
+- **성장 퍼널 4단계**: `tutorial_complete`(튜토리얼 완료) → `reach_lv10`(Lv10 도달) → `first_dungeon`(첫 던전 클리어) → `reach_lv30`(Lv30 도달). 앞 단계를 마쳐야 다음 단계가 열립니다. 이후 성장 지표로 `reach_lv45`(Lv45 도달), `reach_lv60`(Lv60 도달·만렙) 이벤트도 기록되지만, 4단계 퍼널에는 포함하지 않습니다.
   - 튜토리얼을 마치지 못하면 Lv5까지만 오를 수 있습니다.
   - 첫 던전을 클리어하기 전에는 Lv10을 넘길 수 없습니다(Lv10에서 레벨업이 멈춥니다).
-- **길드 가입(`guild_join`)은 선택**입니다. 길드 가입은 첫 던전 클리어 이후 가능합니다.
+- **길드 가입(`guild_join`)은 선택**입니다. 길드 없이도 Lv30까지 성장할 수 있고, 길드 가입은 첫 던전 클리어 이후 가능합니다.
 - 피로도·자동사냥 시스템은 없습니다. 하루 플레이 시간은 접속 시간 자체입니다.
 - 결제 상품은 6개 가격대(1,100 / 5,500 / 11,000 / 33,000 / 55,000 / 110,000원)입니다.
 
@@ -135,7 +135,7 @@
 
 # Aurelion Online: Live-Service Simulation Data Specification
 
-> Operational logs of a fictional MMORPG, **Aurelion Online**. This is not real service data. It was generated for practicing live-service analytics (KPI reporting, anomaly and abuse detection, hypothesis testing). The generator is `gen_mmorpg_data.py` (seed 42) and the consistency checker is `validate_data.py`.
+> Operational logs of a fictional MMORPG, **Aurelion Online**. This is not real service data. It was generated with Claude for practicing live-service analytics (KPI reporting, anomaly and abuse detection, hypothesis testing). The generator is `gen_mmorpg_data.py` (seed 42) and the consistency checker is `validate_data.py`.
 
 ## 1. Scenario
 
@@ -265,4 +265,3 @@ A row exists only on days the account logged in (`user_id` + `date` is unique). 
 ## License
 
 This project was created for portfolio purposes, and all rights are reserved by the author. Please refrain from copying, distributing, or using it commercially without permission.
-
