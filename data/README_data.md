@@ -14,11 +14,11 @@
 |---|---|---|
 | 매주 수요일 05:00~09:00 | 정기 점검 | 서버 점검. 이 시간대에는 접속·결제·이벤트 기록이 없습니다 |
 | 매주 목요일 | 주간 콘텐츠 | 주간 던전·퀘스트 초기화 |
-| 07-21 ~ 07-27 | 여름 축제 1부 | 기간 한정 이벤트. 마케팅 광고를 함께 집행. 이벤트 코인과 한정 코스튬 판매, 결제 상품 보너스 |
-| 08-15 ~ 08-21 | 여름 축제 2부 | 1부와 같은 구성의 시즌 이벤트(광고 재집행) |
+| 07-21 ~ 07-27 | 여름 축제 1부 | 기간 한정 프로모션. 마케팅 광고를 함께 집행. 이벤트 코인과 한정 코스튬 판매, 결제 상품 보너스 |
+| 08-15 ~ 08-21 | 여름 축제 2부 | 1부와 같은 구성의 시즌 프로모션(광고 재집행) |
 | 08-30 | 성장 개편 업데이트 | ① 필드 사냥 경험치 20% 하향(성장 속도 조정) ② Lv45 이상 신규 지역 추가 ③ 장비 강화 패키지 판매 시작 ④ 대용량 클라이언트 패치(모바일은 업데이트 완료까지 시간이 걸림) |
 | 09-08 | 핫픽스 | 필드 경험치 하향폭을 20% → 10%로 완화 (09-08부터 적용) |
-| 09-09 ~ 09-15 | 복귀 지원 이벤트 | 일정 기간 접속하지 않은 유저 대상 복귀 보상과 일반 유저 대상 출석 보상 |
+| 09-09 ~ 09-15 | 복귀 지원 프로모션 | 일정 기간 접속하지 않은 유저 대상 복귀 보상과 일반 유저 대상 출석 보상 |
 
 ## 3. 게임 규칙 (데이터에 반영된 것)
 
@@ -124,7 +124,7 @@
 
 - `reach_lv45`, `reach_lv60` 이벤트는 시뮬레이션이 끝난 뒤 완성된 `daily_activity`에서 도출합니다(별도 난수 사용). 따라서 다른 테이블과 기존 이벤트는 영향을 받지 않습니다.
 - 필요한 패키지는 `numpy`, `pandas`입니다.
-- `gen_mmorpg_data.py`의 `--no-update` 옵션은 8/30 업데이트, 09-08 핫픽스, 복귀 이벤트를 뺀 비교용 데이터를 만듭니다. 분석에는 필요하지 않습니다.
+- `gen_mmorpg_data.py`의 `--no-update` 옵션은 8/30 업데이트, 09-08 핫픽스, 복귀 프로모션을 뺀 비교용 데이터를 만듭니다. 분석에는 필요하지 않습니다.
 - 분석에는 CSV만 있으면 됩니다. 두 스크립트는 데이터가 어떻게 만들어지고 검증되었는지 보여 주는 용도입니다.
 
 ## 라이선스
@@ -149,11 +149,11 @@
 |---|---|---|
 | Every Wednesday 05:00-09:00 | Weekly maintenance | Server maintenance. No logins, payments or events are recorded in this window |
 | Every Thursday | Weekly content | Weekly dungeons and quests reset |
-| 07-21 to 07-27 | Summer Festival, part 1 | Limited-time event with a marketing ad campaign. Event coins, limited costumes, bonus payment bundles |
+| 07-21 to 07-27 | Summer Festival, part 1 | Limited-time promotion with a marketing ad campaign. Event coins, limited costumes, bonus payment bundles |
 | 08-15 to 08-21 | Summer Festival, part 2 | Same format as part 1 (ads run again) |
 | 08-30 | Growth overhaul update | (1) Field hunting XP cut by 20% (growth pacing) (2) New region for Lv45+ (3) Equipment enhancement packs go on sale (4) Large client patch (mobile takes longer to finish updating) |
 | 09-08 | Hotfix | The XP cut is eased from 20% to 10% (effective from 09-08) |
-| 09-09 to 09-15 | Comeback support event | Return rewards for players who have been away, attendance rewards for everyone else |
+| 09-09 to 09-15 | Comeback support promotion | Return rewards for players who have been away, attendance rewards for everyone else |
 
 ## 3. Game rules reflected in the data
 
@@ -259,7 +259,7 @@ A row exists only on days the account logged in (`user_id` + `date` is unique). 
 
 - `reach_lv45` and `reach_lv60` are derived from the finished `daily_activity` table after the simulation (with a separate random stream), so the other tables and the earlier events are not affected.
 - Required packages: `numpy`, `pandas`.
-- The `--no-update` option of `gen_mmorpg_data.py` creates a comparison dataset without the 08-30 update, the 09-08 hotfix and the comeback event. It is not needed for the analysis.
+- The `--no-update` option of `gen_mmorpg_data.py` creates a comparison dataset without the 08-30 update, the 09-08 hotfix and the comeback promotion. It is not needed for the analysis.
 - The analysis only needs the CSV files. The two scripts show how the data was created and verified.
 
 ## License
