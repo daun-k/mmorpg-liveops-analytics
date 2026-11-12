@@ -1,6 +1,6 @@
 # Aurelion Online 라이브 서비스 시뮬레이션 데이터 명세
 
-[한국어](README_data.md) | [English](README_data.en.md)
+[한국어](README_data.kr.md) | [English](README_data.md)
 
 > 가상의 MMORPG **Aurelion Online**의 운영 로그입니다. 실제 서비스 데이터가 아니며, 라이브 서비스 분석(KPI 리포트, 이상·어뷰징 탐지, 가설 검정) 연습용으로 Claude를 사용하여 직접 생성했습니다. 생성 코드는 `gen_mmorpg_data.py`(seed 42), 정합성 검사는 `validate_data.py`입니다.
 
