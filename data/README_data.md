@@ -1,6 +1,6 @@
 # Aurelion Online: Live-Service Simulation Data Specification
 
-[한국어](README_data.md) | [English](README_data.en.md)
+[한국어](README_data.kr.md) | [English](README_data.md)
 
 > Operational logs of a fictional MMORPG, **Aurelion Online**. This is not real service data. It was generated with Claude for practicing live-service analytics (KPI reporting, anomaly and abuse detection, hypothesis testing). The generator is `gen_mmorpg_data.py` (seed 42) and the consistency checker is `validate_data.py`.
 
