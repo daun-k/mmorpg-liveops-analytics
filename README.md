@@ -4,7 +4,7 @@
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/7f0b644a-0290-46ce-b04c-d8b872734d81" />
 
-🔗 **[Tableau Public에서 보기](https://public.tableau.com/app/profile/daun.kim2884/viz/261117_astrasia/Overview)**
+🔗 **[Tableau Public에서 보기](https://public.tableau.com/app/profile/daun.k/viz/261117_astrasia/Overview)**
 
 > 모든 데이터는 직접 설계해 생성한 **합성 데이터**입니다. 실제 게임이나 실제 유저의 데이터가 아닙니다.
 
