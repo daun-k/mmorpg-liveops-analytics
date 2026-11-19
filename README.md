@@ -2,9 +2,9 @@
 
 가상의 MMORPG **Astrasia Online**의 데이터로, 매일 아침 업데이트된 KPI와 어뷰징 의심 유저를 한 화면에서 확인하기 위해 만든 대시보드입니다.
 
-🔗 **[Tableau Public에서 보기](https://public.tableau.com/app/profile/daun.kim2884/viz/261117_astrasia/Overview)**
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/7f0b644a-0290-46ce-b04c-d8b872734d81" />
 
-![Astrasia Online KPI 대시보드 요약 페이지](docs/images/dashboard_overview.png)
+🔗 **[Tableau Public에서 보기](https://public.tableau.com/app/profile/daun.kim2884/viz/261117_astrasia/Overview)**
 
 > 모든 데이터는 직접 설계해 생성한 **합성 데이터**입니다. 실제 게임이나 실제 유저의 데이터가 아닙니다.
 
