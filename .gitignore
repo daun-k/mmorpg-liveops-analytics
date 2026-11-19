@@ -1,0 +1,14 @@
+# 접속 정보
+.env
+
+# 정답 문서
+data/answer_key/ANSWER_KEY.md
+
+# OS / 편집기 / 파이썬
+desktop.ini
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+
+# 디자인 애셋
+assets/
