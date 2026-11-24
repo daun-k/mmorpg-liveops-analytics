@@ -16,11 +16,14 @@
 |---|---|---|
 | Every Wednesday 05:00-09:00 | Weekly maintenance | Server maintenance. No logins, payments or events are recorded in this window |
 | Every Thursday | Weekly content | Weekly dungeons and quests reset |
-| 07-21 to 07-27 | Summer Festival, part 1 | Limited-time event with a marketing ad campaign. Event coins, limited costumes, bonus payment bundles |
+| 07-21 to 07-27 | Summer Festival, part 1 | Limited-time event with a marketing ad campaign. Event coins and limited costumes on sale, plus a payment bonus (extra event coins granted on purchase, with the amount varying by payment amount; the price itself is unchanged) |
 | 08-15 to 08-21 | Summer Festival, part 2 | Same format as part 1 (ads run again) |
 | 08-30 | Growth overhaul update | (1) Field hunting XP cut by 20% (growth pacing) (2) New region for Lv45+ (3) Equipment enhancement packs go on sale (4) Large client patch (mobile takes longer to finish updating) |
 | 09-08 | Hotfix | The XP cut is eased from 20% to 10% (effective from 09-08) |
 | 09-09 to 09-15 | Comeback support event | Return rewards for players who have been away, attendance rewards for everyone else |
+
+- **Event coins**: A currency usable only during the summer festival, exchanged in the festival shop for limited costumes and similar items. Obtainable by purchase or as a payment bonus.
+- **Payment bonus**: During the festival, purchases keep the same price but also grant extra event coins, with the amount varying by payment amount.
 
 ## 3. Game rules reflected in the data
 
@@ -126,8 +129,7 @@ A row exists only on days the account logged in (`user_id` + `date` is unique). 
 
 - The analysis only needs the CSV files. The two scripts show how the data was created and verified.
 - Required packages: `numpy`, `pandas`.
-- Adding the `--no-update` option when running `gen_mmorpg_data.py` creates a comparison dataset for the case where the 8/30 update, the 9/8 hotfix and the comeback event did not happen (the summer festivals are still included). It is not needed for the analysis.
-- Use `--out` to write to a different folder so the existing data is not overwritten. Example: `--no-update --out data_no_update`
+- Adding the `--no-update` option when running `gen_mmorpg_data.py` creates a comparison dataset for the case where the 8/30 update, the 9/8 hotfix and the comeback event did not happen (the summer festivals are still included). When using this option, specify a different folder with `--out` so the existing data is not overwritten. Example: `--no-update --out data_no_update`
 - The `--no-update` option of `gen_mmorpg_data.py` creates a comparison dataset without the 08-30 update, the 09-08 hotfix and the comeback event. It is not needed for the analysis.
 
 ## License
