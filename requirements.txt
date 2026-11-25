@@ -1,0 +1,15 @@
+﻿catboost==1.2.10
+Jinja2==3.1.6
+lightgbm==4.7.0
+matplotlib==3.11.1
+numpy==2.5.1
+openpyxl==3.1.5
+pandas==3.0.5
+PyMySQL==1.2.0
+python-dotenv==1.2.3
+scikit-learn==1.9.1
+scipy==1.18.1
+seaborn==0.13.2
+SQLAlchemy==2.0.52
+statsmodels==0.15.0
+xgboost==3.4.1
